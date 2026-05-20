@@ -1,0 +1,38 @@
+{
+  "name": "clinica-backend",
+  "version": "1.0.0",
+  "description": "API REST para sistema de agendamento de consultas",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "prisma:seed": "node prisma/seed.js"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "clinica",
+    "agendamento"
+  ],
+  "author": "Vinicios Leite de Campos",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.9",
+    "twilio": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3",
+    "prisma": "^6.19.3"
+  }
+}
