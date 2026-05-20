@@ -30,12 +30,12 @@ Sistema web para controle de agendamentos de consultas em clínicas, permitindo 
 - Twilio (SMS e WhatsApp)
 
 ## 📁 Estrutura do Projeto
-clinica-system/
-├── frontend/          # Interface do usuário
-├── backend/           # API REST
-├── database/          # Scripts e migrations
-├── docs/              # Documentação
-└── README.md
+clinica-system/  
+├── frontend/          # Interface do usuário  
+├── backend/           # API REST  
+├── database/          # Scripts e migrations  
+├── docs/              # Documentação  
+└── README.md  
 
 ## ⚙️ Instalação
 
@@ -65,7 +65,7 @@ npm start
 
 1. Clone o repositório
 ```bash
-git clone https://github.com//clinica-system.git
+git clone https://github.com/viniciosldcampos/clinica-system.git
 cd clinica-system
 ```
 
