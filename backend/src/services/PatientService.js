@@ -6,9 +6,9 @@ const { validateCPF, validatePhone, validateEmail, validateBirthDate, formatCPF,
 
 class PatientService {
   /**
-   * Criar novo paciente (apenas ADMIN)
-   * @param {Object} data - Dados do paciente
-   * @returns {Promise<Object>} - Paciente criado
+    Criar novo paciente (apenas ADMIN)
+    @param {Object} data - Dados do paciente
+    @returns {Promise<Object>} - Paciente criado
    */
   async create(data) {
     const { email, password, name, cpf, phone, birthDate, address } = data;
@@ -53,9 +53,9 @@ class PatientService {
   }
 
   /**
-   * Buscar paciente por ID
-   * @param {string} id - ID do paciente
-   * @returns {Promise<Object>} - Paciente encontrado
+    Buscar paciente por ID
+    @param {string} id - ID do paciente
+    @returns {Promise<Object>} - Paciente encontrado
    */
   async findById(id) {
     const patient = await patientRepository.findById(id);
@@ -68,9 +68,9 @@ class PatientService {
   }
 
   /**
-   * Buscar paciente por user ID
-   * @param {string} userId - ID do usuário
-   * @returns {Promise<Object>} - Paciente encontrado
+    Buscar paciente por user ID
+    @param {string} userId - ID do usuário
+    @returns {Promise<Object>} - Paciente encontrado
    */
   async findByUserId(userId) {
     const patient = await patientRepository.findByUserId(userId);
@@ -83,29 +83,29 @@ class PatientService {
   }
 
   /**
-   * Listar todos os pacientes
-   * @param {Object} filters - Filtros opcionais
-   * @returns {Promise<Array>} - Lista de pacientes
+    Listar todos os pacientes
+    @param {Object} filters - Filtros opcionais
+    @returns {Promise<Array>} - Lista de pacientes
    */
   async findAll(filters = {}) {
     return await patientRepository.findAll(filters);
   }
 
   /**
-   * Buscar pacientes com consultas futuras
-   * @returns {Promise<Array>} - Lista de pacientes
+    Buscar pacientes com consultas futuras
+    @returns {Promise<Array>} - Lista de pacientes
    */
   async findWithUpcomingAppointments() {
     return await patientRepository.findWithUpcomingAppointments();
   }
 
   /**
-   * Atualizar paciente
-   * @param {string} id - ID do paciente
-   * @param {Object} data - Dados a atualizar
-   * @param {string} requestUserId - ID do usuário que faz a requisição
-   * @param {string} requestUserRole - Role do usuário que faz a requisição
-   * @returns {Promise<Object>} - Paciente atualizado
+    Atualizar paciente
+    @param {string} id - ID do paciente
+    @param {Object} data - Dados a atualizar
+    @param {string} requestUserId - ID do usuário que faz a requisição
+    @param {string} requestUserRole - Role do usuário que faz a requisição
+    @returns {Promise<Object>} - Paciente atualizado
    */
   async update(id, data, requestUserId, requestUserRole) {
     // Buscar paciente
@@ -161,11 +161,11 @@ class PatientService {
 
   /**
    * Atualizar email do paciente
-   * @param {string} id - ID do paciente
-   * @param {string} newEmail - Novo email
-   * @param {string} requestUserId - ID do usuário que faz a requisição
-   * @param {string} requestUserRole - Role do usuário que faz a requisição
-   * @returns {Promise<void>}
+    @param {string} id - ID do paciente
+    @param {string} newEmail - Novo email
+    @param {string} requestUserId - ID do usuário que faz a requisição
+    @param {string} requestUserRole - Role do usuário que faz a requisição
+    @returns {Promise<void>}
    */
   async updateEmail(id, newEmail, requestUserId, requestUserRole) {
     // Buscar paciente
@@ -196,9 +196,9 @@ class PatientService {
   }
 
   /**
-   * Deletar paciente (apenas ADMIN)
-   * @param {string} id - ID do paciente
-   * @returns {Promise<void>}
+    Deletar paciente (apenas ADMIN)
+    @param {string} id - ID do paciente
+    @returns {Promise<void>}
    */
   async delete(id) {
     // Verificar se paciente existe
@@ -225,10 +225,10 @@ class PatientService {
   }
 
   /**
-   * Ativar/Desativar paciente (apenas ADMIN)
-   * @param {string} id - ID do paciente
-   * @param {boolean} isActive - Status ativo
-   * @returns {Promise<Object>} - Paciente atualizado
+    Ativar/Desativar paciente (apenas ADMIN)
+    @param {string} id - ID do paciente
+    @param {boolean} isActive - Status ativo
+    @returns {Promise<Object>} - Paciente atualizado
    */
   async toggleActive(id, isActive) {
     // Verificar se paciente existe
@@ -246,20 +246,20 @@ class PatientService {
   }
 
   /**
-   * Contar pacientes
-   * @param {Object} filters - Filtros opcionais
-   * @returns {Promise<number>} - Quantidade de pacientes
+    Contar pacientes
+    @param {Object} filters - Filtros opcionais
+    @returns {Promise<number>} - Quantidade de pacientes
    */
   async count(filters = {}) {
     return await patientRepository.count(filters);
   }
 
   /**
-   * Buscar histórico de consultas do paciente
-   * @param {string} id - ID do paciente
-   * @param {string} requestUserId - ID do usuário que faz a requisição
-   * @param {string} requestUserRole - Role do usuário que faz a requisição
-   * @returns {Promise<Array>} - Lista de consultas
+    Buscar histórico de consultas do paciente
+    @param {string} id - ID do paciente
+    @param {string} requestUserId - ID do usuário que faz a requisição
+    @param {string} requestUserRole - Role do usuário que faz a requisição
+    @returns {Promise<Array>} - Lista de consultas
    */
   async getAppointmentHistory(id, requestUserId, requestUserRole) {
     // Buscar paciente com consultas
