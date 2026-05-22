@@ -1,0 +1,151 @@
+### VARIÁVEIS
+@baseUrl = http://localhost:3333/api
+@adminToken = 
+@patientToken = 
+@doctorToken = 
+
+### ============================================
+### HEALTH CHECK
+### ============================================
+
+### Health Check
+GET http://localhost:3333/health
+
+### API Info
+GET {{baseUrl}}/
+
+
+### ============================================
+### AUTENTICAÇÃO
+### ============================================
+
+### Login Admin
+# @name loginAdmin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@clinica.com",
+  "password": "senha123"
+}
+
+### Login Paciente (Carlos)
+# @name loginPatient
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "carlos@email.com",
+  "password": "senha123"
+}
+
+### Login Médico (Dr. Silva)
+# @name loginDoctor
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "dr.silva@clinica.com",
+  "password": "senha123"
+}
+
+### Verificar Token
+GET {{baseUrl}}/auth/verify
+Authorization: Bearer {{adminToken}}
+
+### Ver Perfil
+GET {{baseUrl}}/auth/profile
+Authorization: Bearer {{adminToken}}
+
+
+### ============================================
+### MÉDICOS (ROTAS PÚBLICAS)
+### ============================================
+
+### Listar Médicos Ativos (público)
+GET {{baseUrl}}/doctors/active
+
+### Listar Especialidades (público)
+GET {{baseUrl}}/doctors/specialties
+
+### Buscar Médicos por Especialidade (público)
+GET {{baseUrl}}/doctors/specialty/Cardiologia
+
+
+### ============================================
+### PACIENTES (ADMIN)
+### ============================================
+
+### Listar Pacientes
+GET {{baseUrl}}/patients
+Authorization: Bearer {{adminToken}}
+
+### Buscar Paciente por ID
+GET {{baseUrl}}/patients/PATIENT_ID_AQUI
+Authorization: Bearer {{adminToken}}
+
+### Criar Paciente
+POST {{baseUrl}}/patients
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "email": "novo@email.com",
+  "password": "senha123",
+  "name": "Novo Paciente",
+  "cpf": "12312312312",
+  "phone": "11999999999",
+  "birthDate": "2000-01-01",
+  "address": "Rua Teste, 123"
+}
+
+
+### ============================================
+### CONSULTAS
+### ============================================
+
+### Listar Consultas (ADMIN)
+GET {{baseUrl}}/appointments
+Authorization: Bearer {{adminToken}}
+
+### Listar Minhas Consultas (PATIENT)
+GET {{baseUrl}}/appointments/my
+Authorization: Bearer {{patientToken}}
+
+### Listar Minhas Consultas (DOCTOR)
+GET {{baseUrl}}/appointments/my
+Authorization: Bearer {{doctorToken}}
+
+### Criar Consulta (PATIENT)
+POST {{baseUrl}}/appointments
+Authorization: Bearer {{patientToken}}
+Content-Type: application/json
+
+{
+  "patientId": "PATIENT_ID_AQUI",
+  "doctorId": "DOCTOR_ID_AQUI",
+  "appointmentDate": "2026-07-01",
+  "appointmentTime": "10:00",
+  "notes": "Consulta de teste"
+}
+
+
+### ============================================
+### INDISPONIBILIDADES
+### ============================================
+
+### Ver Indisponibilidades Futuras de um Médico (público)
+GET {{baseUrl}}/doctor-unavailability/doctor/DOCTOR_ID_AQUI/future
+
+### Criar Indisponibilidade (DOCTOR)
+POST {{baseUrl}}/doctor-unavailability
+Authorization: Bearer {{doctorToken}}
+Content-Type: application/json
+
+{
+  "doctorId": "DOCTOR_ID_AQUI",
+  "unavailableDate": "2026-08-01",
+  "startTime": "14:00",
+  "endTime": "18:00",
+  "reason": "Conferência"
+}
