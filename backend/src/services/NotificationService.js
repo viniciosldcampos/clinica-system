@@ -19,8 +19,15 @@ class NotificationService {
     });
 
     // Configurar Twilio (SMS e WhatsApp)
-    if (env.TWILIO_ACCOUNT_SID && env.TWILIO_AUTH_TOKEN) {
+    // Só inicializa se tiver credenciais válidas (começa com AC)
+    if (
+      env.TWILIO_ACCOUNT_SID && 
+      env.TWILIO_AUTH_TOKEN &&
+      env.TWILIO_ACCOUNT_SID.startsWith('AC')
+    ) {
       this.twilioClient = twilio(env.TWILIO_ACCOUNT_SID, env.TWILIO_AUTH_TOKEN);
+    } else {
+      console.log('⚠️  Twilio não configurado. SMS e WhatsApp desabilitados.');
     }
   }
 
