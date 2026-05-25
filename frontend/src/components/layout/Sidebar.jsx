@@ -1,3 +1,5 @@
+import { useAuth } from '../../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 import './Sidebar.css'
 
 const menuItems = [
@@ -14,6 +16,14 @@ export default function Sidebar({
   onMenuClick,
   user
 }) {
+  const { logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
+
   return (
     <aside className="sidebar" role="navigation" aria-label="Menu principal">
       <div>
@@ -47,19 +57,31 @@ export default function Sidebar({
         </nav>
       </div>
 
-      {/* Profile */}
-      {user && (
-        <div className="sidebar-profile">
-          <div className="sidebar-avatar" aria-hidden="true">
-            {user.initials || user.name?.charAt(0) || 'U'}
-          </div>
+      <div>
+        {/* Botão de Logout */}
+        <button
+          className="sidebar-logout"
+          onClick={handleLogout}
+          aria-label="Sair do sistema"
+        >
+          <span className="sidebar-item-icon" aria-hidden="true">🚪</span>
+          Sair
+        </button>
 
-          <div>
-            <h3 className="sidebar-profile-name">{user.name}</h3>
-            <p className="sidebar-profile-role">{user.role}</p>
+        {/* Profile */}
+        {user && (
+          <div className="sidebar-profile">
+            <div className="sidebar-avatar" aria-hidden="true">
+              {user.initials || user.name?.charAt(0) || 'U'}
+            </div>
+
+            <div>
+              <h3 className="sidebar-profile-name">{user.name}</h3>
+              <p className="sidebar-profile-role">{user.role}</p>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </aside>
   )
 }

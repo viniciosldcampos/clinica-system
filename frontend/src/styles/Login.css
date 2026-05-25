@@ -314,6 +314,134 @@
   line-height: 1.6;
 }
 
+/* Estilos de Erro */
+.api-error {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 18px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #dc2626;
+  font-size: 15px;
+  font-weight: 600;
+  animation: shake 0.4s ease-in-out;
+}
+
+.error-icon {
+  font-size: 20px;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-10px);
+  }
+
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+.input-group input.error {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+.input-group input.error:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.field-error {
+  font-size: 13px;
+  color: #dc2626;
+  font-weight: 600;
+  margin-top: -4px;
+}
+
+/* Loading State */
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.login-button .loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Botões de Teste (Desenvolvimento) */
+.test-credentials {
+  margin-top: 24px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+}
+
+.test-btn {
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.test-btn:hover:not(:disabled) {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.test-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Inputs desabilitados */
+.input-group input:disabled {
+  background: #f8fafc;
+  cursor: not-allowed;
+}
+
+.forgot-password:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.google-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.remember-option input:disabled {
+  cursor: not-allowed;
+}
+
 @media (max-width: 1100px) {
   .login-container {
     grid-template-columns: 1fr;
