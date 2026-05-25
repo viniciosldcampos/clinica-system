@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Header from './Header'
 import './DashboardLayout.css'
@@ -14,10 +15,25 @@ export default function DashboardLayout({
 }) {
   const [activeMenuItem, setActiveMenuItem] = useState('dashboard')
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const navigate = useNavigate()
 
   const handleMenuClick = (itemId) => {
     setActiveMenuItem(itemId)
-    setSidebarOpen(false) // Fecha sidebar no mobile após clicar
+    setSidebarOpen(false)
+
+    // Navegar para a rota correspondente
+    const routes = {
+      dashboard: '/dashboard',
+      doctors: '/doctors',
+      patients: '/patients',
+      appointments: '/appointments',
+      notifications: '/dashboard',
+      settings: '/dashboard',
+    }
+
+    if (routes[itemId]) {
+      navigate(routes[itemId])
+    }
   }
 
   const toggleSidebar = () => {
