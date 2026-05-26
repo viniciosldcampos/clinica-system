@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { statsService } from '../services/statsService'
 
 export function useDashboard() {
   const [metrics, setMetrics] = useState([])
@@ -7,94 +8,141 @@ export function useDashboard() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  useEffect(() => {
-    loadDashboardData()
+  const loadMockData = useCallback(() => {
+    // Dados de fallback em caso de erro
+    setMetrics([
+      {
+        title: 'Consultas Hoje',
+        value: '0',
+        trend: 'Sem dados',
+        icon: '📅'
+      },
+      {
+        title: 'Pacientes Ativos',
+        value: '0',
+        trend: 'Sem dados',
+        icon: '🧑'
+      },
+      {
+        title: 'Médicos Online',
+        value: '0',
+        trend: 'Sem dados',
+        icon: '👨‍⚕️'
+      },
+      {
+        title: 'Faturamento',
+        value: 'R$ 0',
+        trend: 'Sem dados',
+        icon: '💰'
+      },
+    ])
+
+    setAppointments([])
+    setNotifications([])
   }, [])
 
-  const loadDashboardData = async () => {
+  const formatTime = (timeString) => {
+    try {
+      const date = new Date(timeString)
+      return date.toLocaleTimeString('pt-BR', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      })
+    } catch {
+      return timeString
+    }
+  }
+
+  const formatStatus = (status) => {
+    const statusMap = {
+      'AGENDADA': 'Agendada',
+      'CONFIRMADA': 'Confirmada',
+      'REALIZADA': 'Realizada',
+      'CANCELADA': 'Cancelada',
+      'FALTOU': 'Faltou',
+    }
+    
+    return statusMap[status] || status
+  }
+
+  const loadDashboardData = useCallback(async () => {
     setIsLoading(true)
     setError(null)
 
     try {
-      // Por enquanto, dados mockados
-      // TODO: Integrar com API real
-      await new Promise(resolve => setTimeout(resolve, 1000)) // Simular delay
+      // Buscar dados reais da API
+      const [stats, recentAppointments] = await Promise.all([
+        statsService.getDashboardStats(),
+        statsService.getRecentAppointments(5),
+      ])
 
+      // Montar métricas
       setMetrics([
         {
           title: 'Consultas Hoje',
-          value: '128',
+          value: stats.appointmentsToday.toString(),
           trend: '+12% este mês',
           icon: '📅'
         },
         {
           title: 'Pacientes Ativos',
-          value: '1.842',
+          value: stats.activePatients.toString(),
           trend: '+18% este mês',
           icon: '🧑'
         },
         {
           title: 'Médicos Online',
-          value: '36',
+          value: stats.onlineDoctors.toString(),
           trend: 'Sistema operando normalmente',
           icon: '👨‍⚕️'
         },
         {
           title: 'Faturamento',
-          value: 'R$ 84k',
+          value: stats.revenue,
           trend: '+9% este mês',
           icon: '💰'
         },
       ])
 
-      setAppointments([
-        {
-          patient: 'Maria Oliveira',
-          doctor: 'Dr. Ricardo Alves',
-          specialty: 'Cardiologia',
-          time: '09:30',
-          status: 'Confirmada',
-        },
-        {
-          patient: 'João Pedro',
-          doctor: 'Dra. Camila Rocha',
-          specialty: 'Dermatologia',
-          time: '10:00',
-          status: 'Em andamento',
-        },
-        {
-          patient: 'Fernanda Lima',
-          doctor: 'Dr. Marcelo Costa',
-          specialty: 'Ortopedia',
-          time: '11:20',
-          status: 'Pendente',
-        },
-      ])
+      // Formatar consultas para exibição
+      const formattedAppointments = recentAppointments.map(apt => ({
+        patient: apt.patient?.name || 'N/A',
+        doctor: apt.doctor?.name || 'N/A',
+        specialty: apt.doctor?.specialty || 'N/A',
+        time: apt.appointmentTime ? formatTime(apt.appointmentTime) : 'N/A',
+        status: formatStatus(apt.status),
+      }))
 
+      setAppointments(formattedAppointments)
+
+      // Notificações mockadas (TODO: implementar no backend)
       setNotifications([
         {
           title: 'Nova consulta agendada',
-          description: 'Fernanda Lima agendou consulta para hoje às 14:00.',
+          description: 'Uma nova consulta foi agendada para hoje.',
           time: '5 min atrás'
         },
         {
-          title: 'Atendimento finalizado',
-          description: 'Consulta de João Pedro foi concluída com sucesso.',
-          time: '15 min atrás'
-        },
-        {
-          title: 'Reagendamento solicitado',
-          description: 'Maria Oliveira solicitou alteração de horário.',
+          title: 'Sistema atualizado',
+          description: 'O sistema foi atualizado com sucesso.',
           time: '1h atrás'
         },
       ])
+
     } catch (err) {
       console.error('Erro ao carregar dados do dashboard:', err)
-      setError('Erro ao carregar dados do dashboard')
+      setError(err.message || 'Erro ao carregar dados do dashboard')
+      
+      // Em caso de erro, carregar dados mockados
+      loadMockData()
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [loadMockData])
+
+  useEffect(() => {
+    loadDashboardData()
+  }, [loadDashboardData])
 
   const refreshData = () => {
     loadDashboardData()
