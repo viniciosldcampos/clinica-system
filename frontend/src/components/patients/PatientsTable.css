@@ -1,0 +1,154 @@
+.patients-table-wrapper {
+  overflow-x: auto;
+}
+
+.patients-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.patients-table th,
+.patients-table td {
+  padding: var(--spacing-lg) var(--spacing-md);
+  text-align: left;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.patients-table th {
+  color: var(--gray-500);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--bg-light);
+}
+
+.patients-table td {
+  color: var(--gray-900);
+  font-size: var(--font-size-base);
+}
+
+.patients-table tbody tr {
+  transition: background var(--transition-fast);
+}
+
+.patients-table tbody tr:hover {
+  background: var(--bg-light);
+}
+
+/* Coluna de nome com avatar */
+.patient-name {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.patient-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: var(--primary-gradient);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
+  flex-shrink: 0;
+}
+
+.patient-name .name {
+  font-weight: var(--font-weight-semibold);
+  color: var(--gray-900);
+}
+
+.patient-name .email {
+  font-size: var(--font-size-sm);
+  color: var(--gray-500);
+  margin-top: 2px;
+}
+
+.patient-cpf {
+  font-family: monospace;
+  font-weight: var(--font-weight-semibold);
+  color: var(--primary-blue);
+}
+
+.patient-phone {
+  color: var(--gray-600);
+}
+
+.patient-email {
+  color: var(--gray-600);
+  font-size: var(--font-size-sm);
+}
+
+.patient-birthdate {
+  color: var(--gray-600);
+}
+
+/* Ações */
+.actions-column {
+  width: 150px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: var(--spacing-xs);
+  align-items: center;
+}
+
+.action-buttons button {
+  font-size: var(--font-size-lg);
+}
+
+/* Loading */
+.patients-table-loading {
+  padding: var(--spacing-lg);
+}
+
+/* Empty state */
+.patients-table-empty {
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: var(--spacing-lg);
+  opacity: 0.5;
+}
+
+.patients-table-empty h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-900);
+  margin-bottom: var(--spacing-sm);
+}
+
+.patients-table-empty p {
+  color: var(--gray-500);
+  font-size: var(--font-size-base);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .patients-table {
+    font-size: var(--font-size-sm);
+  }
+
+  .patients-table th,
+  .patients-table td {
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .patient-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: var(--font-size-base);
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+}
