@@ -194,6 +194,7 @@ class AuthService {
       crm,
       specialty,
       phone,
+      isActive: true,
     });
 
     return doctor;
