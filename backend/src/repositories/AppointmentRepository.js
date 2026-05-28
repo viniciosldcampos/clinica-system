@@ -14,6 +14,7 @@ class AppointmentRepository {
           select: {
             id: true,
             name: true,
+            cpf: true,
             phone: true,
             user: {
               select: {
@@ -27,6 +28,7 @@ class AppointmentRepository {
             id: true,
             name: true,
             specialty: true,
+            phone: true,
           },
         },
       },
@@ -48,7 +50,6 @@ class AppointmentRepository {
             name: true,
             cpf: true,
             phone: true,
-            birthDate: true,
             user: {
               select: {
                 email: true,
@@ -63,9 +64,13 @@ class AppointmentRepository {
             crm: true,
             specialty: true,
             phone: true,
+            user: {
+              select: {
+                isActive: true,
+              },
+            },
           },
         },
-        notifications: true,
       },
     });
   }
@@ -88,22 +93,31 @@ class AppointmentRepository {
       where.doctorId = filters.doctorId;
     }
 
-    // Filtro por data
-    if (filters.date) {
-      where.appointmentDate = new Date(filters.date);
-    }
-
-    // Filtro por período
-    if (filters.startDate && filters.endDate) {
-      where.appointmentDate = {
-        gte: new Date(filters.startDate),
-        lte: new Date(filters.endDate),
-      };
-    }
-
     // Filtro por status
     if (filters.status) {
       where.status = filters.status;
+    }
+
+    // Filtro por período
+    if (filters.dateFrom && filters.dateTo) {
+      const startDate = new Date(filters.dateFrom);
+      const endDate = new Date(filters.dateTo);
+      endDate.setHours(23, 59, 59, 999);
+
+      where.appointmentDate = {
+        gte: startDate,
+        lte: endDate,
+      };
+    } else if (filters.dateFrom) {
+      where.appointmentDate = {
+        gte: new Date(filters.dateFrom),
+      };
+    } else if (filters.dateTo) {
+      const endDate = new Date(filters.dateTo);
+      endDate.setHours(23, 59, 59, 999);
+      where.appointmentDate = {
+        lte: endDate,
+      };
     }
 
     return await prisma.appointment.findMany({
@@ -113,6 +127,7 @@ class AppointmentRepository {
           select: {
             id: true,
             name: true,
+            cpf: true,
             phone: true,
           },
         },
@@ -124,10 +139,9 @@ class AppointmentRepository {
           },
         },
       },
-      orderBy: [
-        { appointmentDate: 'asc' },
-        { appointmentTime: 'asc' },
-      ],
+      orderBy: {
+        appointmentDate: 'asc',
+      },
     });
   }
 
@@ -148,10 +162,9 @@ class AppointmentRepository {
           },
         },
       },
-      orderBy: [
-        { appointmentDate: 'desc' },
-        { appointmentTime: 'desc' },
-      ],
+      orderBy: {
+        appointmentDate: 'desc',
+      },
     });
   }
 
@@ -168,14 +181,14 @@ class AppointmentRepository {
           select: {
             id: true,
             name: true,
+            cpf: true,
             phone: true,
           },
         },
       },
-      orderBy: [
-        { appointmentDate: 'desc' },
-        { appointmentTime: 'desc' },
-      ],
+      orderBy: {
+        appointmentDate: 'desc',
+      },
     });
   }
 
@@ -184,63 +197,12 @@ class AppointmentRepository {
     @returns {Promise<Array>} - Lista de consultas
    */
   async findUpcoming() {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const now = new Date();
 
     return await prisma.appointment.findMany({
       where: {
         appointmentDate: {
-          gte: today,
-        },
-        status: {
-          in: ['AGENDADA', 'CONFIRMADA'],
-        },
-      },
-      include: {
-        patient: {
-          select: {
-            id: true,
-            name: true,
-            phone: true,
-            user: {
-              select: {
-                email: true,
-              },
-            },
-          },
-        },
-        doctor: {
-          select: {
-            id: true,
-            name: true,
-            specialty: true,
-          },
-        },
-      },
-      orderBy: [
-        { appointmentDate: 'asc' },
-        { appointmentTime: 'asc' },
-      ],
-    });
-  }
-
-  /**
-   * Buscar consultas de amanhã
-    @returns {Promise<Array>} - Lista de consultas
-   */
-  async findTomorrow() {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-
-    const dayAfterTomorrow = new Date(tomorrow);
-    dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 1);
-
-    return await prisma.appointment.findMany({
-      where: {
-        appointmentDate: {
-          gte: tomorrow,
-          lt: dayAfterTomorrow,
+          gte: now,
         },
         status: {
           in: ['AGENDADA', 'CONFIRMADA'],
@@ -268,59 +230,9 @@ class AppointmentRepository {
         },
       },
       orderBy: {
-        appointmentTime: 'asc',
+        appointmentDate: 'asc',
       },
     });
-  }
-
-  /**
-   * Verificar conflito de horário para médico
-    @param {string} doctorId - ID do médico
-    @param {Date} date - Data da consulta
-    @param {string} time - Horário da consulta
-    @param {string} excludeAppointmentId - ID da consulta a excluir (para update)
-    @returns {Promise<Object|null>} - Consulta conflitante ou null
-   */
-  async checkDoctorConflict(doctorId, date, time, excludeAppointmentId = null) {
-    const where = {
-      doctorId,
-      appointmentDate: new Date(date),
-      appointmentTime: new Date(`1970-01-01T${time}:00`),
-      status: {
-        notIn: ['CANCELADA', 'FALTOU'],
-      },
-    };
-
-    if (excludeAppointmentId) {
-      where.id = { not: excludeAppointmentId };
-    }
-
-    return await prisma.appointment.findFirst({ where });
-  }
-
-  /**
-   * Verificar conflito de horário para paciente
-    @param {string} patientId - ID do paciente
-    @param {Date} date - Data da consulta
-    @param {string} time - Horário da consulta
-    @param {string} excludeAppointmentId - ID da consulta a excluir (para update)
-    @returns {Promise<Object|null>} - Consulta conflitante ou null
-   */
-  async checkPatientConflict(patientId, date, time, excludeAppointmentId = null) {
-    const where = {
-      patientId,
-      appointmentDate: new Date(date),
-      appointmentTime: new Date(`1970-01-01T${time}:00`),
-      status: {
-        notIn: ['CANCELADA', 'FALTOU'],
-      },
-    };
-
-    if (excludeAppointmentId) {
-      where.id = { not: excludeAppointmentId };
-    }
-
-    return await prisma.appointment.findFirst({ where });
   }
 
   /**
@@ -338,7 +250,13 @@ class AppointmentRepository {
           select: {
             id: true,
             name: true,
+            cpf: true,
             phone: true,
+            user: {
+              select: {
+                email: true,
+              },
+            },
           },
         },
         doctor: {
@@ -346,6 +264,7 @@ class AppointmentRepository {
             id: true,
             name: true,
             specialty: true,
+            phone: true,
           },
         },
       },

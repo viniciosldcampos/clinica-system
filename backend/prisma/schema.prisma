@@ -93,25 +93,26 @@ model Doctor {
 
 // Tabela de Consultas
 model Appointment {
-  id              String            @id @default(uuid())
-  patientId       String            @map("patient_id")
-  doctorId        String            @map("doctor_id")
-  appointmentDate DateTime          @map("appointment_date") @db.Date
-  appointmentTime DateTime          @map("appointment_time") @db.Time
-  durationMinutes Int               @default(30) @map("duration_minutes")
-  status          AppointmentStatus @default(AGENDADA)
-  notes           String?
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
+  id                 String            @id @default(uuid())
+  patientId          String            @map("patient_id")
+  doctorId           String            @map("doctor_id")
+  appointmentDate    DateTime          @map("appointment_date")
+  appointmentDateEnd DateTime          @map("appointment_date_end")
+  durationMinutes    Int               @default(20) @map("duration_minutes")
+  status             AppointmentStatus @default(AGENDADA)
+  notes              String?
+  cancelReason       String?           @map("cancel_reason")
+  createdAt          DateTime          @default(now()) @map("created_at")
+  updatedAt          DateTime          @updatedAt @map("updated_at")
 
   // Relacionamentos
   patient       Patient        @relation(fields: [patientId], references: [id], onDelete: Cascade)
   doctor        Doctor         @relation(fields: [doctorId], references: [id], onDelete: Cascade)
   notifications Notification[]
 
-  // Constraints únicos
-  @@unique([doctorId, appointmentDate, appointmentTime], name: "unique_doctor_datetime")
-  @@unique([patientId, appointmentDate, appointmentTime], name: "unique_patient_datetime")
+  // Constraints
+  @@unique([doctorId, appointmentDate], name: "unique_doctor_appointment")
+  @@unique([patientId, appointmentDate], name: "unique_patient_appointment")
   @@map("appointments")
 }
 

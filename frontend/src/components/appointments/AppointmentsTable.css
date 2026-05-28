@@ -1,0 +1,209 @@
+.appointments-table-wrapper {
+  overflow-x: auto;
+}
+
+.appointments-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.appointments-table th,
+.appointments-table td {
+  padding: var(--spacing-lg) var(--spacing-md);
+  text-align: left;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.appointments-table th {
+  color: var(--gray-500);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--bg-light);
+}
+
+.appointments-table td {
+  color: var(--gray-900);
+  font-size: var(--font-size-base);
+}
+
+.appointments-table tbody tr {
+  transition: background var(--transition-fast);
+}
+
+.appointments-table tbody tr:hover {
+  background: var(--bg-light);
+}
+
+/* Coluna de paciente */
+.appointment-patient {
+  display: table-cell;
+}
+
+.patient-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.patient-info .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--primary-gradient);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-base);
+  flex-shrink: 0;
+}
+
+.patient-info .name {
+  font-weight: var(--font-weight-semibold);
+  color: var(--gray-900);
+}
+
+.patient-info .cpf {
+  font-size: var(--font-size-sm);
+  color: var(--gray-500);
+  margin-top: 2px;
+  font-family: monospace;
+}
+
+/* Coluna de médico */
+.appointment-doctor {
+  display: table-cell;
+}
+
+.doctor-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.doctor-info .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--primary-gradient);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-base);
+  flex-shrink: 0;
+}
+
+.doctor-info .name {
+  font-weight: var(--font-weight-semibold);
+  color: var(--gray-900);
+}
+
+/* Coluna de data/hora */
+.appointment-datetime {
+  display: table-cell;
+  white-space: nowrap;
+}
+
+.datetime {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.datetime .date {
+  font-weight: var(--font-weight-semibold);
+  color: var(--gray-900);
+}
+
+.datetime .time {
+  font-size: var(--font-size-sm);
+  color: var(--gray-500);
+}
+
+/* Coluna de especialidade */
+.appointment-specialty {
+  display: table-cell;
+}
+
+/* Coluna de status */
+.appointment-status {
+  display: table-cell;
+  white-space: nowrap;
+}
+
+/* Ações */
+.actions-column {
+  width: 180px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: var(--spacing-xs);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.action-buttons button {
+  font-size: var(--font-size-lg);
+}
+
+/* Loading */
+.appointments-table-loading {
+  padding: var(--spacing-lg);
+}
+
+/* Empty state */
+.appointments-table-empty {
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: var(--spacing-lg);
+  opacity: 0.5;
+}
+
+.appointments-table-empty h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-900);
+  margin-bottom: var(--spacing-sm);
+}
+
+.appointments-table-empty p {
+  color: var(--gray-500);
+  font-size: var(--font-size-base);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .appointments-table {
+    font-size: var(--font-size-sm);
+  }
+
+  .appointments-table th,
+  .appointments-table td {
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .patient-info .avatar,
+  .doctor-info .avatar {
+    width: 36px;
+    height: 36px;
+    font-size: var(--font-size-sm);
+  }
+
+  .action-buttons {
+    justify-content: center;
+  }
+
+  .action-buttons button {
+    font-size: var(--font-size-base);
+  }
+}
