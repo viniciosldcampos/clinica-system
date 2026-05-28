@@ -22,7 +22,6 @@ export default function AppointmentDetailsModal({
   const isAgendada = appointment.status === 'AGENDADA'
   const isConfirmada = appointment.status === 'CONFIRMADA'
   const isCancelada = appointment.status === 'CANCELADA'
-  const isRealizada = appointment.status === 'REALIZADA'
 
   return (
     <div

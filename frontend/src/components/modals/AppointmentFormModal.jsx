@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import Button from '../ui/Button'
-import Input from '../ui/Input'
 import './AppointmentFormModal.css'
 
 export default function AppointmentFormModal({
