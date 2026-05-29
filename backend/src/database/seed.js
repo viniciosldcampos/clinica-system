@@ -5,7 +5,7 @@ async function seed() {
   console.log('🌱 Iniciando seed do banco de dados...\n');
 
   try {
-    // Limpar banco (cuidado: deleta todos os dados)
+    // Limpar banco
     console.log('🗑️  Limpando banco de dados...');
     await prisma.notification.deleteMany();
     await prisma.appointment.deleteMany();
@@ -15,12 +15,9 @@ async function seed() {
     await prisma.user.deleteMany();
     console.log('✅ Banco limpo!\n');
 
-    // Criar senha padrão (hash)
     const passwordHash = await bcrypt.hash('senha123', 10);
 
-    // ============================================
-    // 1. CRIAR USUÁRIO ADMIN
-    // ============================================
+    // CRIAR ADMIN
     console.log('👤 Criando usuário ADMIN...');
     const admin = await prisma.user.create({
       data: {
@@ -31,12 +28,8 @@ async function seed() {
     });
     console.log(`✅ Admin criado: ${admin.email}\n`);
 
-    // ============================================
-    // 2. CRIAR MÉDICOS
-    // ============================================
+    // CRIAR MÉDICOS
     console.log('👨‍⚕️ Criando médicos...');
-
-    // Médico 1 - Cardiologista
     const userDoctor1 = await prisma.user.create({
       data: {
         email: 'dr.silva@clinica.com',
@@ -56,7 +49,6 @@ async function seed() {
     });
     console.log(`✅ ${doctor1.name} - ${doctor1.specialty}`);
 
-    // Médico 2 - Dermatologista
     const userDoctor2 = await prisma.user.create({
       data: {
         email: 'dra.santos@clinica.com',
@@ -76,12 +68,8 @@ async function seed() {
     });
     console.log(`✅ ${doctor2.name} - ${doctor2.specialty}\n`);
 
-    // ============================================
-    // 3. CRIAR PACIENTES
-    // ============================================
+    // CRIAR PACIENTES
     console.log('🧑 Criando pacientes...');
-
-    // Paciente 1
     const userPatient1 = await prisma.user.create({
       data: {
         email: 'carlos@email.com',
@@ -102,7 +90,6 @@ async function seed() {
     });
     console.log(`✅ ${patient1.name}`);
 
-    // Paciente 2
     const userPatient2 = await prisma.user.create({
       data: {
         email: 'ana@email.com',
@@ -123,7 +110,6 @@ async function seed() {
     });
     console.log(`✅ ${patient2.name}`);
 
-    // Paciente 3
     const userPatient3 = await prisma.user.create({
       data: {
         email: 'pedro@email.com',
@@ -144,18 +130,15 @@ async function seed() {
     });
     console.log(`✅ ${patient3.name}\n`);
 
-    // ============================================
-    // 4. CRIAR CONSULTAS
-    // ============================================
+    // CRIAR CONSULTAS (com appointmentDate e appointmentDateEnd)
     console.log('📅 Criando consultas...');
 
-    // Consulta 1 - Passada (Realizada)
     const appointment1 = await prisma.appointment.create({
       data: {
         patientId: patient1.id,
         doctorId: doctor1.id,
-        appointmentDate: new Date('2026-05-10'),
-        appointmentTime: new Date('1970-01-01T09:00:00'),
+        appointmentDate: new Date('2026-05-10T09:00:00'),
+        appointmentDateEnd: new Date('2026-05-10T09:30:00'),
         durationMinutes: 30,
         status: 'REALIZADA',
         notes: 'Consulta de rotina',
@@ -163,13 +146,12 @@ async function seed() {
     });
     console.log(`✅ Consulta realizada: ${patient1.name} com ${doctor1.name}`);
 
-    // Consulta 2 - Futura (Agendada)
     const appointment2 = await prisma.appointment.create({
       data: {
         patientId: patient2.id,
         doctorId: doctor2.id,
-        appointmentDate: new Date('2026-06-15'),
-        appointmentTime: new Date('1970-01-01T14:00:00'),
+        appointmentDate: new Date('2026-06-15T14:00:00'),
+        appointmentDateEnd: new Date('2026-06-15T14:30:00'),
         durationMinutes: 30,
         status: 'AGENDADA',
         notes: 'Primeira consulta',
@@ -177,13 +159,12 @@ async function seed() {
     });
     console.log(`✅ Consulta agendada: ${patient2.name} com ${doctor2.name}`);
 
-    // Consulta 3 - Futura (Confirmada)
     const appointment3 = await prisma.appointment.create({
       data: {
         patientId: patient3.id,
         doctorId: doctor1.id,
-        appointmentDate: new Date('2026-06-20'),
-        appointmentTime: new Date('1970-01-01T10:00:00'),
+        appointmentDate: new Date('2026-06-20T10:00:00'),
+        appointmentDateEnd: new Date('2026-06-20T10:30:00'),
         durationMinutes: 30,
         status: 'CONFIRMADA',
         notes: 'Retorno',
@@ -191,62 +172,15 @@ async function seed() {
     });
     console.log(`✅ Consulta confirmada: ${patient3.name} com ${doctor1.name}\n`);
 
-    // ============================================
-    // 5. CRIAR INDISPONIBILIDADES
-    // ============================================
-    console.log('🚫 Criando indisponibilidades...');
-
-    // Indisponibilidade 1 - Férias do Dr. João
-    await prisma.doctorUnavailability.create({
-      data: {
-        doctorId: doctor1.id,
-        unavailableDate: new Date('2026-07-01'),
-        startTime: new Date('1970-01-01T08:00:00'),
-        endTime: new Date('1970-01-01T18:00:00'),
-        reason: 'Férias',
-      },
-    });
-    console.log(`✅ Dr. João Silva - Férias em 01/07/2026`);
-
-    // Indisponibilidade 2 - Congresso Dra. Maria
-    await prisma.doctorUnavailability.create({
-      data: {
-        doctorId: doctor2.id,
-        unavailableDate: new Date('2026-06-25'),
-        startTime: new Date('1970-01-01T14:00:00'),
-        endTime: new Date('1970-01-01T18:00:00'),
-        reason: 'Congresso de Dermatologia',
-      },
-    });
-    console.log(`✅ Dra. Maria Santos - Congresso em 25/06/2026\n`);
-
-    // ============================================
-    // RESUMO
-    // ============================================
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log('✅ SEED CONCLUÍDO COM SUCESSO!\n');
-    console.log('📊 DADOS CRIADOS:');
-    console.log('  - 1 Admin');
-    console.log('  - 2 Médicos');
-    console.log('  - 3 Pacientes');
-    console.log('  - 3 Consultas');
-    console.log('  - 2 Indisponibilidades\n');
-    console.log('🔐 CREDENCIAIS DE ACESSO:');
-    console.log('  Admin:');
-    console.log('    Email: admin@clinica.com');
-    console.log('    Senha: senha123\n');
-    console.log('  Médicos:');
-    console.log('    Email: dr.silva@clinica.com');
-    console.log('    Senha: senha123');
-    console.log('    Email: dra.santos@clinica.com');
-    console.log('    Senha: senha123\n');
-    console.log('  Pacientes:');
-    console.log('    Email: carlos@email.com');
-    console.log('    Senha: senha123');
-    console.log('    Email: ana@email.com');
-    console.log('    Senha: senha123');
-    console.log('    Email: pedro@email.com');
-    console.log('    Senha: senha123');
+    console.log('🔐 CREDENCIAIS:');
+    console.log('  admin@clinica.com / senha123');
+    console.log('  dr.silva@clinica.com / senha123');
+    console.log('  dra.santos@clinica.com / senha123');
+    console.log('  carlos@email.com / senha123');
+    console.log('  ana@email.com / senha123');
+    console.log('  pedro@email.com / senha123');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
   } catch (error) {
     console.error('❌ Erro ao executar seed:', error);
@@ -256,5 +190,4 @@ async function seed() {
   }
 }
 
-// Executar seed
 seed();
