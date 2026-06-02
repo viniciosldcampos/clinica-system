@@ -7,6 +7,7 @@ const doctorUnavailabilityRoutes = require('./doctorUnavailabilityRoutes');
 const notificationRoutes = require('./notificationRoutes');
 
 const router = express.Router();
+const statsRoutes = require('./statsRoutes');
 
 // Definir rotas
 router.use('/auth', authRoutes);
@@ -15,6 +16,7 @@ router.use('/doctors', doctorRoutes);
 router.use('/appointments', appointmentRoutes);
 router.use('/doctor-unavailability', doctorUnavailabilityRoutes);
 router.use('/notifications', notificationRoutes);
+router.use('/stats', statsRoutes);
 
 // Rota raiz da API
 router.get('/', (req, res) => {
