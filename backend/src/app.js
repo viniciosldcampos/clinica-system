@@ -9,7 +9,24 @@ const app = express();
 
 // Middlewares globais
 app.use(cors({
-  origin: env.FRONTEND_URL,
+  origin: (origin, callback) => {
+    const allowed = [
+      env.FRONTEND_URL,
+      /https:\/\/clinica-system-.*\.vercel\.app$/,
+    ]
+
+    if (!origin) return callback(null, true) // permite Postman, Render health check, etc
+
+    const isAllowed = allowed.some(o =>
+      typeof o === 'string' ? o === origin : o.test(origin)
+    )
+
+    if (isAllowed) {
+      callback(null, true)
+    } else {
+      callback(new Error(`CORS bloqueado para: ${origin}`))
+    }
+  },
   credentials: true,
 }));
 
