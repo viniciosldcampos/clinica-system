@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import '../styles/Login.css'
+import logo from '../logo.png'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -99,17 +100,7 @@ export default function Login() {
 
           <div className="left-content">
             <div className="logo-area">
-              <div className="logo-icon">❤️</div>
-
-              <div>
-                <h1 className="logo-title">
-                  HealthCare Pro
-                </h1>
-
-                <p className="logo-subtitle">
-                  Sistema Inteligente para Clínicas
-                </p>
-              </div>
+              <img src={logo} alt="HealthCare Pro" className="logo-icon" />
             </div>
 
             <div className="hero-content">
