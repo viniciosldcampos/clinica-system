@@ -5,7 +5,6 @@ async function seed() {
   console.log('🌱 Iniciando seed do banco de dados...\n');
 
   try {
-    // Limpar banco
     console.log('🗑️  Limpando banco de dados...');
     await prisma.notification.deleteMany();
     await prisma.appointment.deleteMany();
@@ -68,19 +67,10 @@ async function seed() {
     });
     console.log(`✅ ${doctor2.name} - ${doctor2.specialty}\n`);
 
-    // CRIAR PACIENTES
+    // CRIAR PACIENTES (SEM LOGIN)
     console.log('🧑 Criando pacientes...');
-    const userPatient1 = await prisma.user.create({
-      data: {
-        email: 'carlos@email.com',
-        passwordHash,
-        role: 'PATIENT',
-      },
-    });
-
     const patient1 = await prisma.patient.create({
       data: {
-        userId: userPatient1.id,
         name: 'Carlos Oliveira',
         cpf: '12345678901',
         phone: '11965432109',
@@ -90,17 +80,8 @@ async function seed() {
     });
     console.log(`✅ ${patient1.name}`);
 
-    const userPatient2 = await prisma.user.create({
-      data: {
-        email: 'ana@email.com',
-        passwordHash,
-        role: 'PATIENT',
-      },
-    });
-
     const patient2 = await prisma.patient.create({
       data: {
-        userId: userPatient2.id,
         name: 'Ana Costa',
         cpf: '98765432100',
         phone: '11954321098',
@@ -110,17 +91,8 @@ async function seed() {
     });
     console.log(`✅ ${patient2.name}`);
 
-    const userPatient3 = await prisma.user.create({
-      data: {
-        email: 'pedro@email.com',
-        passwordHash,
-        role: 'PATIENT',
-      },
-    });
-
     const patient3 = await prisma.patient.create({
       data: {
-        userId: userPatient3.id,
         name: 'Pedro Almeida',
         cpf: '11122233344',
         phone: '11943210987',
@@ -130,7 +102,7 @@ async function seed() {
     });
     console.log(`✅ ${patient3.name}\n`);
 
-    // CRIAR CONSULTAS (com appointmentDate e appointmentDateEnd)
+    // CRIAR CONSULTAS
     console.log('📅 Criando consultas...');
 
     const appointment1 = await prisma.appointment.create({
@@ -174,13 +146,19 @@ async function seed() {
 
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log('✅ SEED CONCLUÍDO COM SUCESSO!\n');
-    console.log('🔐 CREDENCIAIS:');
-    console.log('  admin@clinica.com / senha123');
-    console.log('  dr.silva@clinica.com / senha123');
-    console.log('  dra.santos@clinica.com / senha123');
-    console.log('  carlos@email.com / senha123');
-    console.log('  ana@email.com / senha123');
-    console.log('  pedro@email.com / senha123');
+    console.log('🔐 CREDENCIAIS DE ACESSO:');
+    console.log('  Admin:');
+    console.log('    Email: admin@clinica.com');
+    console.log('    Senha: senha123\n');
+    console.log('  Médicos:');
+    console.log('    Email: dr.silva@clinica.com');
+    console.log('    Senha: senha123');
+    console.log('    Email: dra.santos@clinica.com');
+    console.log('    Senha: senha123\n');
+    console.log('  Pacientes: (Gerenciados apenas pelo Admin)');
+    console.log('    - Carlos Oliveira');
+    console.log('    - Ana Costa');
+    console.log('    - Pedro Almeida');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
   } catch (error) {
     console.error('❌ Erro ao executar seed:', error);
