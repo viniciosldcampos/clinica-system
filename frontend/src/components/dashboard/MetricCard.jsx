@@ -24,7 +24,14 @@ export default function MetricCard({
     <Card className="metric-card">
       <div className="metric-header">
         <p className="metric-title">{title}</p>
-        {icon && <span className="metric-icon" aria-hidden="true">{icon}</span>}
+        {icon && (
+          <img
+            src={icon}
+            alt=""
+            aria-hidden="true"
+            className="metric-icon"
+          />
+        )}
       </div>
 
       <h2 className="metric-value">{value}</h2>
