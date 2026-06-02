@@ -76,7 +76,15 @@
 }
 
 .sidebar-item-icon {
-  font-size: var(--font-size-lg);
+  width: var(--icon-width);
+  height: var(--icon-width);
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Ícones ficam brancos no item ativo */
+.sidebar-item.active .sidebar-item-icon {
+  filter: brightness(0) invert(1);
 }
 
 .sidebar-item:hover {

@@ -1,14 +1,21 @@
 import { useAuth } from '../../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import './Sidebar.css'
+import dashboardIcon from '../../icons/dashboard.png'
+import doctorsIcon from '../../icons/doctors.png'
+import patientsIcon from '../../icons/patients.png'
+import appointmentsIcon from '../../icons/appointments.png'
+import notificationsIcon from '../../icons/notifications.png'
+import settingsIcon from '../../icons/settings.png'
+import exitIcon from '../../icons/exit.png'
 
 const menuItems = [
-  { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-  { id: 'doctors', label: 'Médicos', icon: '👨‍⚕️' },
-  { id: 'patients', label: 'Pacientes', icon: '🧑' },
-  { id: 'appointments', label: 'Consultas', icon: '📅' },
-  { id: 'notifications', label: 'Notificações', icon: '🔔' },
-  { id: 'settings', label: 'Configurações', icon: '⚙️' },
+  { id: 'dashboard', label: 'Dashboard', icon: dashboardIcon },
+  { id: 'doctors', label: 'Médicos', icon: doctorsIcon },
+  { id: 'patients', label: 'Pacientes', icon: patientsIcon },
+  { id: 'appointments', label: 'Consultas', icon: appointmentsIcon },
+  { id: 'notifications', label: 'Notificações', icon: notificationsIcon },
+  { id: 'settings', label: 'Configurações', icon: settingsIcon },
 ]
 
 export default function Sidebar({
@@ -32,7 +39,6 @@ export default function Sidebar({
           <div className="sidebar-logo-icon" aria-hidden="true">
             <div className="sidebar-logo-dot"></div>
           </div>
-
           <div>
             <h1 className="sidebar-title">HealthCare Pro</h1>
             <p className="sidebar-subtitle">Painel Administrativo</p>
@@ -48,9 +54,12 @@ export default function Sidebar({
               onClick={() => onMenuClick && onMenuClick(item.id)}
               aria-current={activeItem === item.id ? 'page' : undefined}
             >
-              <span className="sidebar-item-icon" aria-hidden="true">
-                {item.icon}
-              </span>
+              <img
+                src={item.icon}
+                alt=""
+                aria-hidden="true"
+                className="sidebar-item-icon"
+              />
               {item.label}
             </button>
           ))}
@@ -64,7 +73,12 @@ export default function Sidebar({
           onClick={handleLogout}
           aria-label="Sair do sistema"
         >
-          <span className="sidebar-item-icon" aria-hidden="true">🚪</span>
+          <img
+            src={exitIcon}
+            alt=""
+            aria-hidden="true"
+            className="sidebar-item-icon"
+          />
           Sair
         </button>
 
@@ -74,7 +88,6 @@ export default function Sidebar({
             <div className="sidebar-avatar" aria-hidden="true">
               {user.initials || user.name?.charAt(0) || 'U'}
             </div>
-
             <div>
               <h3 className="sidebar-profile-name">{user.name}</h3>
               <p className="sidebar-profile-role">{user.role}</p>

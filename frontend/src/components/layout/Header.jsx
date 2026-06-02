@@ -1,5 +1,7 @@
 import Input from '../ui/Input'
 import './Header.css'
+import notificationsIcon from '../../icons/notifications.png'
+
 
 export default function Header({
   title = 'Dashboard',
@@ -37,9 +39,8 @@ export default function Header({
             onClick={onNotificationClick}
             aria-label={`${notificationCount} notificações não lidas`}
           >
-            <span className="notification-icon" aria-hidden="true">🔔</span>
-            {notificationCount > 0 && (
-              <span className="notification-badge">{notificationCount}</span>
+            <img src={notificationsIcon} alt="" aria-hidden="true" className="notification-icon"/>
+            {notificationCount > 0 && ( <span className="notification-badge">{notificationCount}</span>
             )}
           </button>
         </div>

@@ -50,6 +50,7 @@
 }
 
 .notification-icon {
+  width: var(--icon-width);
   font-size: var(--font-size-xl);
 }
 
