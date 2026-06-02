@@ -53,7 +53,7 @@ class DoctorRepository {
             appointmentDate: 'desc',
           },
         },
-        doctorUnavailability: {
+        doctorUnavailabilities: {
           orderBy: {
             unavailableDate: 'asc',
           },
