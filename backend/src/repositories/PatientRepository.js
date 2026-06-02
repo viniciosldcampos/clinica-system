@@ -1,11 +1,6 @@
 const prisma = require('../config/database');
 
 class PatientRepository {
-  /**
-   * Criar um novo paciente
-    @param {Object} data - Dados do paciente
-    @returns {Promise<Object>} - Paciente criado
-   */
   async create(data) {
     return await prisma.patient.create({
       data,
@@ -22,11 +17,6 @@ class PatientRepository {
     });
   }
 
-  /**
-   * Buscar paciente por ID
-    @param {string} id - ID do paciente
-    @returns {Promise<Object|null>} - Paciente encontrado ou null
-   */
   async findById(id) {
     return await prisma.patient.findUnique({
       where: { id },
@@ -57,11 +47,6 @@ class PatientRepository {
     });
   }
 
-  /**
-   * Buscar paciente por user_id
-    @param {string} userId - ID do usuário
-    @returns {Promise<Object|null>} - Paciente encontrado ou null
-   */
   async findByUserId(userId) {
     return await prisma.patient.findUnique({
       where: { userId },
@@ -78,41 +63,38 @@ class PatientRepository {
     });
   }
 
-  /**
-   * Buscar paciente por CPF
-    @param {string} cpf - CPF do paciente
-    @returns {Promise<Object|null>} - Paciente encontrado ou null
-   */
   async findByCPF(cpf) {
     return await prisma.patient.findUnique({
       where: { cpf },
     });
   }
 
-  /**
-   * Listar todos os pacientes
-    @param {Object} filters - Filtros opcionais
-    @returns {Promise<Array>} - Lista de pacientes
-   */
+  async findByEmail(email) {
+    return await prisma.patient.findUnique({
+      where: { email },
+    });
+  }
+
   async findAll(filters = {}) {
     const where = {};
 
-    // Filtro por nome (busca parcial)
     if (filters.name) {
       where.name = {
         contains: filters.name,
-        mode: 'insensitive', // Case insensitive
+        mode: 'insensitive',
       };
     }
 
-    // Filtro por CPF
     if (filters.cpf) {
       where.cpf = filters.cpf;
     }
 
-    // Filtro por telefone
     if (filters.phone) {
       where.phone = filters.phone;
+    }
+
+    if (typeof filters.isActive === 'boolean') {
+      where.isActive = filters.isActive;
     }
 
     return await prisma.patient.findMany({
@@ -132,12 +114,6 @@ class PatientRepository {
     });
   }
 
-  /**
-   * Atualizar paciente
-    @param {string} id - ID do paciente
-    @param {Object} data - Dados a atualizar
-    @returns {Promise<Object>} - Paciente atualizado
-   */
   async update(id, data) {
     return await prisma.patient.update({
       where: { id },
@@ -155,22 +131,12 @@ class PatientRepository {
     });
   }
 
-  /**
-   * Deletar paciente
-    @param {string} id - ID do paciente
-    @returns {Promise<Object>} - Paciente deletado
-   */
   async delete(id) {
     return await prisma.patient.delete({
       where: { id },
     });
   }
 
-  /**
-   * Contar pacientes
-    @param {Object} filters - Filtros opcionais
-    @returns {Promise<number>} - Quantidade de pacientes
-   */
   async count(filters = {}) {
     const where = {};
 
@@ -184,10 +150,6 @@ class PatientRepository {
     return await prisma.patient.count({ where });
   }
 
-  /**
-   * Buscar pacientes com consultas futuras
-    @returns {Promise<Array>} - Lista de pacientes
-   */
   async findWithUpcomingAppointments() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -232,6 +194,24 @@ class PatientRepository {
             appointmentDate: 'asc',
           },
         },
+      },
+    });
+  }
+
+  async getAppointmentHistory(patientId) {
+    return await prisma.appointment.findMany({
+      where: { patientId },
+      include: {
+        doctor: {
+          select: {
+            id: true,
+            name: true,
+            specialty: true,
+          },
+        },
+      },
+      orderBy: {
+        appointmentDate: 'desc',
       },
     });
   }
