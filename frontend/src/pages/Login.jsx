@@ -271,14 +271,6 @@ export default function Login() {
                 >
                   Médico
                 </button>
-                <button
-                  type="button"
-                  onClick={() => fillTestCredentials('patient')}
-                  className="test-btn"
-                  disabled={isLoading}
-                >
-                  Paciente
-                </button>
               </div>
             </div>
 

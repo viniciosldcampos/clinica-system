@@ -1,6 +1,11 @@
 import Badge from '../ui/Badge'
 import Button from '../ui/Button'
 import './PatientsTable.css'
+import editIcon from '../../icons/edit.png'
+import agreeIcon from '../../icons/agree.png'
+import binIcon from '../../icons/bin.png'
+import disabledIcon from '../../icons/disabled.png'
+
 
 export default function PatientsTable({
   patients = [],
@@ -22,7 +27,7 @@ export default function PatientsTable({
   if (patients.length === 0) {
     return (
       <div className="patients-table-empty">
-        <div className="empty-icon">🧑</div>
+        <div className="empty-icon"></div>
         <h3>Nenhum paciente encontrado</h3>
         <p>Adicione o primeiro paciente ou ajuste os filtros de busca.</p>
       </div>
@@ -37,7 +42,6 @@ export default function PatientsTable({
             <th>Nome</th>
             <th>CPF</th>
             <th>Telefone</th>
-            <th>Email</th>
             <th>Data de Nascimento</th>
             <th>Status</th>
             <th className="actions-column">Ações</th>
@@ -52,16 +56,15 @@ export default function PatientsTable({
                 </div>
                 <div>
                   <div className="name">{patient.name}</div>
-                  <div className="email">{patient.user?.email || 'N/A'}</div>
+                  <div className="email">{patient.email || 'N/A'}</div>
                 </div>
               </td>
               <td className="patient-cpf">{formatCPF(patient.cpf)}</td>
               <td className="patient-phone">{formatPhone(patient.phone)}</td>
-              <td className="patient-email">{patient.user?.email || 'N/A'}</td>
               <td className="patient-birthdate">{formatDate(patient.birthDate)}</td>
               <td>
-                <Badge variant={patient.user?.isActive ? 'success' : 'error'}>
-                  {patient.user?.isActive ? 'Ativo' : 'Inativo'}
+                <Badge variant={patient.isActive ? 'success' : 'error'}>
+                  {patient.isActive ? 'Ativo' : 'Inativo'}
                 </Badge>
               </td>
               <td className="actions-column">
@@ -72,16 +75,21 @@ export default function PatientsTable({
                     onClick={() => onEdit(patient)}
                     ariaLabel={`Editar ${patient.name}`}
                   >
-                    ✏️
+                    <img
+                      src={editIcon}
+                      alt=""
+                      aria-hidden="true"
+                      className="sidebar-item-icon"
+                    />
                   </Button>
 
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => onToggleActive(patient)}
-                    ariaLabel={patient.user?.isActive ? `Desativar ${patient.name}` : `Ativar ${patient.name}`}
+                    ariaLabel={patient.isActive ? `Desativar ${patient.name}` : `Ativar ${patient.name}`}
                   >
-                    {patient.user?.isActive ? '🔴' : '🟢'}
+                    {patient.isActive ? (<img src={disabledIcon} alt="Desativar" className="action-icon" />) : (<img src={agreeIcon} alt="Ativar" className="action-icon" />)}
                   </Button>
 
                   <Button
@@ -90,7 +98,12 @@ export default function PatientsTable({
                     onClick={() => onDelete(patient)}
                     ariaLabel={`Deletar ${patient.name}`}
                   >
-                    🗑️
+                    <img
+                      src={binIcon}
+                      alt=""
+                      aria-hidden="true"
+                      className="sidebar-item-icon"
+                    />
                   </Button>
                 </div>
               </td>

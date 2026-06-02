@@ -1,6 +1,11 @@
 import Badge from '../ui/Badge'
 import Button from '../ui/Button'
 import './DoctorsTable.css'
+import disabledIcon from '../../icons/disabled.png'
+import agreeIcon from '../../icons/agree.png'
+import binIcon from '../../icons/bin.png'
+import editIcon from '../../icons/edit.png'
+
 
 export default function DoctorsTable({
   doctors = [],
@@ -72,7 +77,12 @@ export default function DoctorsTable({
                     onClick={() => onEdit(doctor)}
                     ariaLabel={`Editar ${doctor.name}`}
                   >
-                    ✏️
+                    <img
+                      src={editIcon}
+                      alt=""
+                      aria-hidden="true"
+                      className="sidebar-item-icon"
+                    />
                   </Button>
 
                   <Button
@@ -81,7 +91,7 @@ export default function DoctorsTable({
                     onClick={() => onToggleActive(doctor)}
                     ariaLabel={doctor.user?.isActive ? `Desativar ${doctor.name}` : `Ativar ${doctor.name}`}
                   >
-                    {doctor.user?.isActive ? '🔴' : '🟢'}
+                    {doctor.user?.isActive ? (<img src={disabledIcon} alt="Desativar" className="action-icon" />) : (<img src={agreeIcon} alt="Ativar" className="action-icon" />)}
                   </Button>
 
                   <Button
@@ -90,7 +100,12 @@ export default function DoctorsTable({
                     onClick={() => onDelete(doctor)}
                     ariaLabel={`Deletar ${doctor.name}`}
                   >
-                    🗑️
+                    <img
+                      src={binIcon}
+                      alt=""
+                      aria-hidden="true"
+                      className="sidebar-item-icon"
+                    />
                   </Button>
                 </div>
               </td>

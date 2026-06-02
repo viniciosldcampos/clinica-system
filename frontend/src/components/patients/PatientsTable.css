@@ -7,14 +7,19 @@
   border-collapse: collapse;
 }
 
-.patients-table th,
-.patients-table td {
-  padding: var(--spacing-lg) var(--spacing-md);
-  text-align: left;
-  border-bottom: 1px solid var(--gray-200);
-}
+/* patientsTable.css */
+.patients-table th:nth-child(1) { width: 20%;} /* Nome */
+.patients-table th:nth-child(2) { width: 15%;} /* CPF */
+.patients-table th:nth-child(3) { width: 15%;} /* Telefone */
+.patients-table th:nth-child(4) { width: 15%;} /* Data de nascimento */
+.patients-table th:nth-child(5) { width: 10%;} /* Status */
+.patients-table th:nth-child(6) { width: 25%;} /* Ações */
 
 .patients-table th {
+  width: auto;
+  padding: 12px 0 8px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--gray-200);
   color: var(--gray-500);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
@@ -24,6 +29,10 @@
 }
 
 .patients-table td {
+  margin: 0;
+  padding: 16px 0 16px 0;
+  text-align: left;
+  border-bottom: 1px solid var(--gray-200);
   color: var(--gray-900);
   font-size: var(--font-size-base);
 }
@@ -117,6 +126,10 @@
   font-size: 64px;
   margin-bottom: var(--spacing-lg);
   opacity: 0.5;
+}
+
+.action-icon {
+  width: var(--icon-width);
 }
 
 .patients-table-empty h3 {

@@ -24,14 +24,12 @@ export default function Patients() {
     deletePatient,
   } = usePatients()
 
-  // Estados dos modais
   const [isFormModalOpen, setIsFormModalOpen] = useState(false)
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
   const [selectedPatient, setSelectedPatient] = useState(null)
   const [confirmAction, setConfirmAction] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Handlers de filtros
   const handleSearchChange = (e) => {
     updateFilters({ search: e.target.value })
   }
@@ -40,33 +38,28 @@ export default function Patients() {
     updateFilters({ isActive: e.target.checked })
   }
 
-  // Handler de criar paciente
   const handleCreateClick = () => {
     setSelectedPatient(null)
     setIsFormModalOpen(true)
   }
 
-  // Handler de editar paciente
   const handleEditClick = (patient) => {
     setSelectedPatient(patient)
     setIsFormModalOpen(true)
   }
 
-  // Handler de ativar/desativar paciente
   const handleToggleActiveClick = (patient) => {
     setSelectedPatient(patient)
     setConfirmAction('toggle')
     setIsConfirmModalOpen(true)
   }
 
-  // Handler de deletar paciente
   const handleDeleteClick = (patient) => {
     setSelectedPatient(patient)
     setConfirmAction('delete')
     setIsConfirmModalOpen(true)
   }
 
-  // Submit do formulário
   const handleFormSubmit = async (data) => {
     setIsSubmitting(true)
 
@@ -74,10 +67,8 @@ export default function Patients() {
       let result
 
       if (selectedPatient) {
-        // Editar
         result = await updatePatient(selectedPatient.id, data)
       } else {
-        // Criar
         result = await createPatient(data)
       }
 
@@ -92,7 +83,6 @@ export default function Patients() {
     }
   }
 
-  // Confirmar ação
   const handleConfirmAction = async () => {
     if (!selectedPatient) return
 
@@ -102,7 +92,7 @@ export default function Patients() {
       let result
 
       if (confirmAction === 'toggle') {
-        result = await toggleActive(selectedPatient.id, !selectedPatient.user?.isActive)
+        result = await toggleActive(selectedPatient.id, !selectedPatient.isActive)
       } else if (confirmAction === 'delete') {
         result = await deletePatient(selectedPatient.id)
       }
@@ -141,7 +131,6 @@ export default function Patients() {
         </CardHeader>
 
         <CardContent>
-          {/* Filtros */}
           <div className="filters-section" style={{
             display: 'grid',
             gridTemplateColumns: '1fr auto',
@@ -149,7 +138,6 @@ export default function Patients() {
             marginBottom: '24px',
             alignItems: 'flex-end'
           }}>
-            {/* Busca */}
             <Input
               type="search"
               placeholder="Buscar por nome, CPF ou email..."
@@ -157,7 +145,6 @@ export default function Patients() {
               onChange={handleSearchChange}
             />
 
-            {/* Filtro de Ativos */}
             <label style={{
               display: 'flex',
               alignItems: 'center',
@@ -176,7 +163,6 @@ export default function Patients() {
               Apenas ativos
             </label>
 
-            {/* Botão de limpar filtros */}
             {(filters.search || !filters.isActive) && (
               <Button variant="ghost" onClick={clearFilters}>
                 Limpar filtros
@@ -184,7 +170,6 @@ export default function Patients() {
             )}
           </div>
 
-          {/* Mensagem de erro */}
           {error && (
             <div style={{
               background: '#fee2e2',
@@ -198,7 +183,6 @@ export default function Patients() {
             </div>
           )}
 
-          {/* Tabela */}
           <PatientsTable
             patients={patients}
             isLoading={isLoading}
@@ -207,7 +191,6 @@ export default function Patients() {
             onToggleActive={handleToggleActiveClick}
           />
 
-          {/* Total de pacientes */}
           {!isLoading && patients.length > 0 && (
             <div style={{
               marginTop: '16px',
@@ -221,7 +204,6 @@ export default function Patients() {
         </CardContent>
       </Card>
 
-      {/* Modal de Formulário */}
       <PatientFormModal
         isOpen={isFormModalOpen}
         onClose={() => {
@@ -233,7 +215,6 @@ export default function Patients() {
         isLoading={isSubmitting}
       />
 
-      {/* Modal de Confirmação */}
       <ConfirmModal
         isOpen={isConfirmModalOpen}
         onClose={() => {
@@ -245,14 +226,14 @@ export default function Patients() {
         title={
           confirmAction === 'delete'
             ? 'Deletar Paciente'
-            : selectedPatient?.user?.isActive
+            : selectedPatient?.isActive
               ? 'Desativar Paciente'
               : 'Ativar Paciente'
         }
         message={
           confirmAction === 'delete'
             ? `Tem certeza que deseja deletar o paciente ${selectedPatient?.name}? Esta ação não pode ser desfeita.`
-            : selectedPatient?.user?.isActive
+            : selectedPatient?.isActive
               ? `Desativar o paciente ${selectedPatient?.name}? Ele não poderá mais agendar consultas.`
               : `Ativar o paciente ${selectedPatient?.name}? Ele poderá agendar consultas novamente.`
         }
