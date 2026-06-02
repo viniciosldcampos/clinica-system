@@ -74,7 +74,8 @@
   --transition-slow: 0.4s ease;
 
   /* Sizes */
-  --sidebar-width: 290px;
+  --sidebar-width: 330px;
+  --icon-width: 25px;
   --header-height: 80px;
   --button-height-sm: 42px;
   --button-height-md: 52px;
