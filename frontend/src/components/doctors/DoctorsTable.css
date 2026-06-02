@@ -7,14 +7,19 @@
   border-collapse: collapse;
 }
 
-.doctors-table th,
-.doctors-table td {
-  padding: var(--spacing-lg) var(--spacing-md);
-  text-align: left;
-  border-bottom: 1px solid var(--gray-200);
-}
+/* DoctorsTable.css */
+.doctors-table th:nth-child(1) { width: 25%; }  /* Nome */
+.doctors-table th:nth-child(2) { width: 10%; }  /* CRM */
+.doctors-table th:nth-child(3) { width: 15%; }  /* Especialidade */
+.doctors-table th:nth-child(4) { width: 15%; }  /* Telefone */
+.doctors-table th:nth-child(5) { width: 10%; }  /* Status */
+.doctors-table th:nth-child(6) { width: 30%; }  /* Ações */
 
 .doctors-table th {
+  width: auto;
+  padding: 12px 0 8px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--gray-200);
   color: var(--gray-500);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
@@ -24,6 +29,10 @@
 }
 
 .doctors-table td {
+  margin: 0;
+  padding: 16px 0 16px 0;
+  text-align: left;
+  border-bottom: 1px solid var(--gray-200);
   color: var(--gray-900);
   font-size: var(--font-size-base);
 }
@@ -40,10 +49,13 @@
 .doctor-name {
   display: flex;
   align-items: center;
+  margin: 0;
+  padding: 0;
   gap: var(--spacing-md);
 }
 
 .doctor-avatar {
+  margin: 12px;
   width: 42px;
   height: 42px;
   border-radius: var(--radius-md);
