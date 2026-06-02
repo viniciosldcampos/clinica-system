@@ -7,6 +7,15 @@
   border-collapse: collapse;
 }
 
+
+/* appointmentsTable.css */
+.appointments-table th:nth-child(1) { width: 20%;} /* Nome */
+.appointments-table th:nth-child(2) { width: 20%;} /* Médico */
+.appointments-table th:nth-child(3) { width: 15%;} /* Data/Hora */
+.appointments-table th:nth-child(4) { width: 12.5%;} /* Especialidade */
+.appointments-table th:nth-child(5) { width: 12.5%;} /* Status */
+.appointments-table th:nth-child(6) { width: 20%;} /* Ações */
+
 .appointments-table th,
 .appointments-table td {
   padding: var(--spacing-lg) var(--spacing-md);
@@ -21,6 +30,7 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   background: var(--bg-light);
+  padding: 12px;
 }
 
 .appointments-table td {

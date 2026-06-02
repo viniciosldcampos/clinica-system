@@ -1,6 +1,10 @@
 import Badge from '../ui/Badge'
 import Button from '../ui/Button'
 import './AppointmentsTable.css'
+import viewIcon from '../../icons/view.png'
+import editIcon from '../../icons/edit.png'
+import deleteIcon from '../../icons/delete.png'
+import agreeIcon from '../../icons/agree.png'
 
 export default function AppointmentsTable({
   appointments = [],
@@ -92,7 +96,12 @@ export default function AppointmentsTable({
                     onClick={() => onViewDetails(appointment)}
                     ariaLabel="Ver detalhes"
                   >
-                    👁️
+                    <img
+                      src={viewIcon}
+                      alt=""
+                      aria-hidden="true"
+                      className="sidebar-item-icon"
+                    />
                   </Button>
 
                   {appointment.status === 'AGENDADA' && (
@@ -103,7 +112,12 @@ export default function AppointmentsTable({
                         onClick={() => onEdit(appointment)}
                         ariaLabel="Reagendar"
                       >
-                        ✏️
+                      <img
+                        src={editIcon}
+                        alt=""
+                        aria-hidden="true"
+                        className="sidebar-item-icon"
+                      />
                       </Button>
 
                       <Button
@@ -112,19 +126,29 @@ export default function AppointmentsTable({
                         onClick={() => onCancel(appointment)}
                         ariaLabel="Cancelar"
                       >
-                        ❌
+                      <img
+                        src={deleteIcon}
+                        alt=""
+                        aria-hidden="true"
+                        className="sidebar-item-icon"
+                      />
                       </Button>
                     </>
                   )}
 
                   {appointment.status === 'CONFIRMADA' && (
                     <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => onUpdateStatus(appointment, 'REALIZADA')}
-                      ariaLabel="Marcar como realizada"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onUpdateStatus(appointment, 'REALIZADA')}
+                    ariaLabel="Marcar como realizada"
                     >
-                      ✓
+                    <img
+                      src={agreeIcon}
+                      alt=""
+                      aria-hidden="true"
+                      className="sidebar-item-icon"
+                    />
                     </Button>
                   )}
                 </div>
